@@ -13,8 +13,6 @@ const int NUM_TESTS = 4;
 //Function prototypes
 void getStudentData(string[], double[][NUM_TESTS]);
 
-double calculateAverage(const double[], int);
-
 char determineLetterGrade(double);
 
 void printResults(const string[], const double[][NUM_TESTS], const char[]);
@@ -26,12 +24,16 @@ int main()
     string studentNames[NUM_STUDENT]; 
     char letterGrades[NUM_STUDENT]; 
     double testScores[NUM_STUDENT][NUM_TESTS]; 
+
     // Input student data
     getStudentData(studentNames, testScores); 
+
     // Calculate average scores (dropping the lowest score) and assign letter grades 
     for (int i = 0; i < NUM_STUDENT; ++i) { 
         double average = averageAfterDropLowest(testScores[i], NUM_TESTS); 
-        letterGrades[i] = determineLetterGrade(average); } 
+        letterGrades[i] = determineLetterGrade(average); 
+    } 
+
     // Display the results 
     printResults(studentNames, testScores, letterGrades); 
 
@@ -56,14 +58,6 @@ void getStudentData(string studentNames[], double testScores[][NUM_TESTS]) {
     } 
 }
 
-// Function to calculate the average of test scores
-double calculateAverage(const double scores[], int size) {
-    double total = 0.0;
-    for (int i = 0; i < size; ++i) {
-        total += scores[i];
-    }
-    return total / size;
-}
 
 // Function to determine the letter grade based on the average score
 char determineLetterGrade(double average) {
@@ -74,15 +68,16 @@ char determineLetterGrade(double average) {
     else return 'F';
 }
 
-// Function to display the results
-void printResults(const string studentNames[], const double testScores[][NUM_TESTS], const char letterGrades[]) {
+// Function to display the results 
+void printResults(const string studentNames[], const double testScores[][NUM_TESTS], const char letterGrades[]) { 
     for (int i = 0; i < NUM_STUDENT; ++i) {
-        double average = calculateAverage(testScores[i], NUM_TESTS);
-        cout << "\nStudent: " << studentNames[i]
-            << "\nAverage Score: " << fixed << setprecision(2) << average
-            << "\nLetter Grade: " << letterGrades[i] << "\n";
-    }
+        double average = averageAfterDropLowest(testScores[i], NUM_TESTS);
+        cout << "\nStudent: " << studentNames[i] 
+             << "\nAverage Score (excluding lowest): " << fixed << std::setprecision(2) << average 
+             << "\nLetter Grade: " << letterGrades[i] << "\n"; 
+    } 
 }
+
 
 // Function to calculate the average of test scores, dropping the lowest score 
 double averageAfterDropLowest(const double scores[], int size) {
@@ -97,3 +92,4 @@ double averageAfterDropLowest(const double scores[], int size) {
     total -= minScore; // Subtract the lowest score from the total 
     return total / (size - 1); // Calculate the average, excluding the lowest score 
 }
+

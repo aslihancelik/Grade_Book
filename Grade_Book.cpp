@@ -19,22 +19,25 @@ char determineLetterGrade(double);
 
 void printResults(const string[], const double[][NUM_TESTS], const char[]);
 
+double averageAfterDropLowest(const double[], int);
+
 int main()
 {
     string studentNames[NUM_STUDENT]; 
     char letterGrades[NUM_STUDENT]; 
     double testScores[NUM_STUDENT][NUM_TESTS]; 
-    // Input student data 
+    // Input student data
     getStudentData(studentNames, testScores); 
-    // Calculate average scores and assign letter grades 
+    // Calculate average scores (dropping the lowest score) and assign letter grades 
     for (int i = 0; i < NUM_STUDENT; ++i) { 
-        double average = calculateAverage(testScores[i], NUM_TESTS); 
-        letterGrades[i] = determineLetterGrade(average); 
-    } // Display the results 
-    printResults(studentNames, testScores, letterGrades);
-    
-    return 0;
+        double average = averageAfterDropLowest(testScores[i], NUM_TESTS); 
+        letterGrades[i] = determineLetterGrade(average); } 
+    // Display the results 
+    printResults(studentNames, testScores, letterGrades); 
+
+    return 0; 
 }
+
 
 // Function to input student names and test scores 
 void getStudentData(string studentNames[], double testScores[][NUM_TESTS]) {
@@ -79,4 +82,18 @@ void printResults(const string studentNames[], const double testScores[][NUM_TES
             << "\nAverage Score: " << fixed << setprecision(2) << average
             << "\nLetter Grade: " << letterGrades[i] << "\n";
     }
+}
+
+// Function to calculate the average of test scores, dropping the lowest score 
+double averageAfterDropLowest(const double scores[], int size) {
+    double total = 0.0; 
+    double minScore = scores[0];
+    for (int i = 0; i < size; ++i) {
+        total += scores[i];
+        if (scores[i] < minScore) {
+            minScore = scores[i];
+        }
+    }
+    total -= minScore; // Subtract the lowest score from the total 
+    return total / (size - 1); // Calculate the average, excluding the lowest score 
 }
